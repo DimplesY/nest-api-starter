@@ -28,7 +28,7 @@ export class CacheService {
     this.cache = cache
 
     this.redisClient.on('ready', () => {
-      this.logger.log('Redis 已准备好！')
+      this.logger.log('Redis is ready！')
     })
   }
 
