@@ -1,5 +1,5 @@
 <p align="center">
-<img width="1108" alt="image" src="https://github.com/DimplesY/nest-api-starter/assets/51285767/f19cccca-38ed-4893-899d-520afe9fe2e6">
+<img width="1081" alt="nest-api-starter" src="https://github.com/DimplesY/nest-api-starter/assets/51285767/f2fdd4a1-7307-4f14-adc4-88292eeece6f">
 </p>
 
 <h2 align="center">
