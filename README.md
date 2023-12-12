@@ -1,5 +1,11 @@
-# WIP
+<h2 align="center">
+nest-api-starter
+</h2><br>
 
-# Nest-API-Starter
+## Features
 
-# Usage
+## Getting Started
+
+```bash
+npx degit DimplesY/nest-api-starter my-api
+```
