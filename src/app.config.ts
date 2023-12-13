@@ -13,6 +13,10 @@ export const REDIS = {
   disableApiCache: false,
 }
 
+export const DATABASE = {
+  url: 'mysql://root:root@localhost:3306/nest',
+}
+
 type SYSTEM = {
   banner: boolean | (() => boolean)
 }
