@@ -6,13 +6,13 @@ import { PassportStrategy } from '@nestjs/passport'
 import { __secret } from './auth.module'
 import { AuthService } from './auth.service'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
-import { PrismaService } from '~/processors/prisma/prisma.service'
+import { DatabaseService } from '~/processors/database/database.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    private readonly prismaService: PrismaService,
+    private readonly db: DatabaseService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.prismaService.user.findFirst({
+    const user = await this.db.prisma.user.findFirst({
       where: {
         id: payload.id,
       },

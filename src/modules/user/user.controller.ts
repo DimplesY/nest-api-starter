@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common'
-import { Bypass, Paginator } from '~/common/decorators/http.decorator'
+import { Bypass } from '~/common/decorators/http.decorator'
 import { UserCreateRequest } from './request/user-register.request'
 import { UserService } from './user.service'
+import { PagerDto } from '~/shared/dto/pager.dto'
 
 @Controller('user')
 export class UserController {
@@ -13,13 +14,8 @@ export class UserController {
   }
 
   @Get()
-  @Paginator
-  async findAll(@Query('_take') take: number, @Query('_skip') skip: number) {
-    const result = await this.userService.findAll({
-      take,
-      skip,
-    })
-    return result
+  async findAll(@Query() query: PagerDto) {
+    return this.userService.findAll(query)
   }
 
   @Post('/bypass')

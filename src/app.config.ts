@@ -14,7 +14,7 @@ export const REDIS = {
 }
 
 export const DATABASE = {
-  url: 'mysql://root:root@localhost:3306/nest',
+  url: process.env.DATABASE_URL,
 }
 
 type SYSTEM = {

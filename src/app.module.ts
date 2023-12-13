@@ -6,15 +6,15 @@ import { ZodValidationPipe } from 'nestjs-zod'
 import { AllExceptionsFilter } from './common/filters/any-exception.filter'
 import { PageQueryInterceptor } from './common/interceptors/page-query.interceptor'
 import { ResponseInterceptor } from './common/interceptors/response.interceptor'
-import { logBanner, showBanner } from './global/index.global'
+import { logBanner } from './global/index.global'
 import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module'
 import { HelperModule } from './processors/helper/helper.module'
-import { PrismaModule } from './processors/prisma/prisma.module'
 import { RedisModule } from './processors/redis/redis.module'
+import { DatabaseModule } from './processors/database/database.module'
 
 @Module({
-  imports: [PrismaModule, RedisModule, HelperModule, UserModule, AuthModule],
+  imports: [DatabaseModule, RedisModule, HelperModule, UserModule, AuthModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
@@ -37,11 +37,11 @@ import { RedisModule } from './processors/redis/redis.module'
   ],
 })
 export class AppModule {
-  static register(isInit: boolean): DynamicModule {
+  static register(showBanner: boolean): DynamicModule {
     showBanner && logBanner()
     consola.log(
       `
-      ${chalk.cyan('当前环境初始化状态:')} ${isInit}
+      ${chalk.cyan('当前环境:')} ${process.env.NODE_ENV}
     `,
     )
     return {

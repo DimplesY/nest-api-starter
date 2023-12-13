@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { PrismaService } from '~/processors/prisma/prisma.service'
 import { compareSync } from 'bcrypt'
 import { sleep } from '~/shared/utils/tool.utils'
 import { BizException } from '~/common/exceptions/biz.exception'
 import { ErrorCodeEnum } from '~/constants/error-code.constant'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
+import { User } from '@prisma/client'
+import { DatabaseService } from '~/processors/database/database.service'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly db: DatabaseService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -19,7 +20,7 @@ export class AuthService {
   }
 
   async validateUsernameAndPassword(username: string, password: string) {
-    const user = await this.prismaService.user.findFirst({
+    const user = await this.db.prisma.user.findFirst({
       where: {
         username,
         password,
@@ -39,6 +40,11 @@ export class AuthService {
     }
 
     return this.jwtService.sign(payload)
+  }
+
+  async getUserFromToken(token: string): Promise<User> {
+    const id = this.jwtService.decode<JwtPayload>(token)['id']
+    return this.db.prisma.user.findUniqueOrThrow({ where: { id } })
   }
 
   async verifyPayload(payload: JwtPayload): Promise<boolean> {

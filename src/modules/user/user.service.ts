@@ -1,34 +1,41 @@
 import { Injectable } from '@nestjs/common'
-import { Prisma, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { isArrayLike } from 'lodash'
-import { PrismaService } from '~/processors/prisma/prisma.service'
+import { DatabaseService } from '~/processors/database/database.service'
 import { UserCreateRequest } from './request/user-register.request'
+import { PagerDto } from '~/shared/dto/pager.dto'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly db: DatabaseService) {}
 
   create(UserCreateRequest: UserCreateRequest) {
-    return this.prismaService.user.create({
+    return this.db.prisma.user.create({
       data: {
         ...UserCreateRequest,
       },
     })
   }
 
-  async findAll(param: Prisma.UserFindManyArgs) {
-    const [dbUserList, total] = await this.prismaService.$transaction([
-      this.prismaService.user.findMany(param),
-      this.prismaService.user.count({ where: param.where }),
-    ])
+  async findAll(query: PagerDto) {
+    const { size = 10, page = 1 } = query
+    const result = await this.db.prisma.user.paginate(
+      {
+        include: {
+          userList: true,
+        },
+        orderBy: {
+          createdTime: 'desc',
+        },
+      },
+      { size, page },
+    )
 
-    const userList = this.transformUserList(dbUserList)
-
-    return [userList, total]
+    return result
   }
 
   async findOne(id: string) {
-    const dbUser = await this.prismaService.user.findUniqueOrThrow({
+    const dbUser = await this.db.prisma.user.findUniqueOrThrow({
       where: { id },
     })
     const user = this.transformUser(dbUser)
