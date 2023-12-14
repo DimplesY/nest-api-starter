@@ -20,10 +20,9 @@ export class AuthService {
   }
 
   async validateUsernameAndPassword(username: string, password: string) {
-    const user = await this.db.prisma.user.findFirst({
+    const user = await this.db.prisma.user.findUnique({
       where: {
         username,
-        password,
       },
     })
 

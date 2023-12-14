@@ -53,9 +53,10 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('身份过期')
     }
 
-    // const owner = await this.userService.getOwner()
-    // request.owner = owner
-    // request.token = jwt
+    const user = await this.authService.getUserFromToken(jwt)
+
+    request.owner = user
+    request.token = jwt
     return true
   }
 

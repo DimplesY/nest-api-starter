@@ -12,7 +12,7 @@ datasource db {
 
 // 用户
 model User {
-  id                String          @id
+  id                String          @id @default("")
   username          String          @unique @db.VarChar(50)
   password          String
   nickName          String          @map("nick_name")

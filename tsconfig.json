@@ -20,7 +20,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "@model/*": ["zod/*"]
     }
   }
 }

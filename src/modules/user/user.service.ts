@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { User } from '@prisma/client'
-import { isArrayLike } from 'lodash'
 import { DatabaseService } from '~/processors/database/database.service'
-import { UserCreateRequest } from './request/user-register.request'
 import { PagerDto } from '~/shared/dto/pager.dto'
+import { AuthService } from '../auth/auth.service'
+import { UserCreateRequest } from './request/user-register.request'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly authService: AuthService,
+  ) {}
 
   create(UserCreateRequest: UserCreateRequest) {
     return this.db.prisma.user.create({
@@ -35,10 +37,9 @@ export class UserService {
   }
 
   async findOne(id: string) {
-    const dbUser = await this.db.prisma.user.findUniqueOrThrow({
+    const user = await this.db.prisma.user.findUniqueOrThrow({
       where: { id },
     })
-    const user = this.transformUser(dbUser)
     return user
   }
 
@@ -48,19 +49,5 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`
-  }
-
-  private transformUser(user: User) {
-    return {
-      ...user,
-      createdTime: user.createdTime.getTime(),
-    }
-  }
-
-  private transformUserList(userList: User[]) {
-    if (!isArrayLike(userList)) {
-      return []
-    }
-    return userList.map((user) => this.transformUser(user))
   }
 }

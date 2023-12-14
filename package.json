@@ -6,8 +6,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "nest build",
     "dev": "pnpm start",
+    "build": "nest build",
     "start": "cross-env NODE_ENV=development nest start -w --path tsconfig.json -- ",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -36,6 +36,7 @@
     "bcrypt": "^5.1.1",
     "cache-manager": "^5.3.1",
     "cache-manager-ioredis-yet": "^1.2.2",
+    "camelcase-keys": "^7.0.2",
     "chalk": "^4.1.2",
     "consola": "^3.2.3",
     "cross-env": "^7.0.3",

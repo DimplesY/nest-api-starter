@@ -9,9 +9,9 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { logBanner } from './global/index.global'
 import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module'
+import { DatabaseModule } from './processors/database/database.module'
 import { HelperModule } from './processors/helper/helper.module'
 import { RedisModule } from './processors/redis/redis.module'
-import { DatabaseModule } from './processors/database/database.module'
 
 @Module({
   imports: [DatabaseModule, RedisModule, HelperModule, UserModule, AuthModule],
