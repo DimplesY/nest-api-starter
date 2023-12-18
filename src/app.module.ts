@@ -4,7 +4,6 @@ import chalk from 'chalk'
 import { consola } from 'consola'
 import { ZodValidationPipe } from 'nestjs-zod'
 import { AllExceptionsFilter } from './common/filters/any-exception.filter'
-import { PageQueryInterceptor } from './common/interceptors/page-query.interceptor'
 import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { logBanner } from './global/index.global'
 import { AuthModule } from './modules/auth/auth.module'
@@ -19,10 +18,6 @@ import { RedisModule } from './processors/redis/redis.module'
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: PageQueryInterceptor,
     },
 
     {

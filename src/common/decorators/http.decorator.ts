@@ -1,20 +1,10 @@
 import { SetMetadata } from '@nestjs/common'
-import { HTTP_REQ_TRANSFORM_PAGINATE } from '~/constants/meta.constant'
 import {
   OMIT_RESPONSE_PROTECT_KEYS,
   RESPONSE_PASSTHROUGH_METADATA,
 } from '~/constants/system.constant'
-
-/**
- * @description 分页转换
- */
-export const Paginator: MethodDecorator = (
-  target,
-  key,
-  descriptor: PropertyDescriptor,
-) => {
-  SetMetadata(HTTP_REQ_TRANSFORM_PAGINATE, true)(descriptor.value)
-}
+import { IdempotenceOption } from '../interceptors/idempotence.interceptor'
+import { HTTP_IDEMPOTENCE_OPTIONS } from '~/constants/meta.constant'
 
 /**
  * @description 跳过响应体处理
@@ -26,6 +16,14 @@ export const Bypass: MethodDecorator = (
 ) => {
   SetMetadata(RESPONSE_PASSTHROUGH_METADATA, true)(descriptor.value)
 }
+
+/**
+ * 幂等
+ */
+export const Idempotence: (options?: IdempotenceOption) => MethodDecorator =
+  (options) => (target, key, descriptor: PropertyDescriptor) => {
+    SetMetadata(HTTP_IDEMPOTENCE_OPTIONS, options || {})(descriptor.value)
+  }
 
 /**
  * @description 过滤响应体中的字段

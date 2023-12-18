@@ -1,17 +1,16 @@
 import {
+  CallHandler,
+  ExecutionContext,
   Injectable,
   NestInterceptor,
-  ExecutionContext,
-  CallHandler,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
+import { isArrayLike, omit } from 'lodash'
 import { Observable, map } from 'rxjs'
-import { isArrayLike, isObjectLike, omit } from 'lodash'
 import {
   OMIT_RESPONSE_PROTECT_KEYS,
   RESPONSE_PASSTHROUGH_METADATA,
 } from '~/constants/system.constant'
-import camelcaseKeys from 'camelcase-keys'
 
 export interface Response<T> {
   data: T
@@ -54,15 +53,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
           data = omit(data, omitKeys)
         }
 
-        return isArrayLike(data) ? { data } : this.serialize(data)
+        return isArrayLike(data) ? { data } : data
       }),
     )
-  }
-
-  private serialize(obj: any) {
-    if (!isObjectLike(obj)) {
-      return obj
-    }
-    return camelcaseKeys(obj, { deep: true })
   }
 }

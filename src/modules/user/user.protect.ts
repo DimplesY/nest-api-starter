@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { UserSchema } from '@model/modelSchema/user-schema'
-import { createProjectionOmit } from '~/utils/schema.util'
+import { createProjectionOmit } from '~/shared/utils/schema.util'
 
 export const UserSchemaSerializeProjection = createProjectionOmit(
   UserSchema.shape,
