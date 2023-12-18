@@ -37,7 +37,7 @@
     "cache-manager": "^5.3.1",
     "cache-manager-ioredis-yet": "^1.2.2",
     "camelcase-keys": "^9.1.2",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "consola": "^3.2.3",
     "cross-env": "^7.0.3",
     "gradient-string": "^2.0.2",
