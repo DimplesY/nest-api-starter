@@ -1,6 +1,7 @@
 import { integer, pgTable, timestamp, unique } from 'drizzle-orm/pg-core';
 import { users } from './users';
 import { roles } from './roles';
+import { relations } from 'drizzle-orm';
 
 // 用户-角色关系表
 export const userRoles = pgTable(
@@ -16,3 +17,14 @@ export const userRoles = pgTable(
   },
   (table) => [unique().on(table.userId, table.roleId)],
 );
+
+export const userRolesRelations = relations(userRoles, ({ one }) => ({
+  user: one(users, {
+    fields: [userRoles.userId],
+    references: [users.id],
+  }),
+  role: one(roles, {
+    fields: [userRoles.roleId],
+    references: [roles.id],
+  }),
+}));
